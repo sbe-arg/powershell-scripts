@@ -16,12 +16,9 @@ $AssetUrl = $Asset.browser_download_url
 
 $Available_v = $Response.tag_name -replace "v","" # tag from github
 if($Available_v.split(".").count -gt "3"){
-    Write-Warning "Version number on $($Response.assets_url) does not match X.X.X"
-    break
+    Write-Warning "New available version of Atom $Available_v but does not match X.X.X so might not be stable."
 }
-$Available_v_match = $Available_v # match what is installed on windows
-
-if($Local_v -lt $Available_v -or $Local_v -eq $null){
+elseif($Local_v -lt $Available_v -or $Local_v -eq $null){
     # do a nice pop up interaction
     $a = new-object -comobject wscript.shell
     $q1 = $a.popup("Download version $Available_v of Atom.io now?",0,"New version available!",4)
