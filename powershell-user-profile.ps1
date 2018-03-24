@@ -6,13 +6,11 @@ $adminstatus = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole
 
 $host.ui.RawUI.WindowTitle = "Powershell - StartTime: $(Get-Date -Format h:mm:sss) - AdminMode: $adminstatus - Version: $($PSVersionTable.PSVersion)"
 
-try{
-    $git = Import-Module posh-git -PassThru | select Name,Version
-    Write-Host "Importing module $($git.Name) $($git.Version)..." -ForegroundColor Yellow
-}
-catch{
-    PowerShellGet\Install-Module posh-git -Scope CurrentUser
-}
+$git = Import-Module posh-git -PassThru | select Name,Version
+if($git -eq $null){PowerShellGet\Install-Module posh-git -Scope CurrentUser ; Import-Module posh-git -PassThru | select Name,Version}
+Write-Host "Importing module $($git.Name) $($git.Version)..." -ForegroundColor Yellow
+
+
 
 # do a nice pop up interaction
 $a = new-object -comobject wscript.shell
