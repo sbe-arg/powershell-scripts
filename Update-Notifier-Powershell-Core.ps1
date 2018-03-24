@@ -14,14 +14,16 @@ $Response = Invoke-RestMethod -Method Get -Uri $URI
 $Asset = $Response.Assets | Where-Object {$_.Name -like "*-win-x64.msi"}
 $AssetUrl = $Asset.browser_download_url
 
+$ignore = $false
+
 $Available_v = $Response.tag_name -replace "v","" # tag from github
 if($Available_v.split(".").count -gt "3"){
-    Write-Warning "Version number on $($Response.assets_url) does not match X.X.X"
-    break
+    Write-Warning "New available version for Powershell-Core $Available_v but does not match X.X.X"
+    $ignore = $true
 }
 $Available_v_match = $Available_v + ".0" # match what is installed on windows
 
-if($Local_v -lt $Available_v -or $Local_v -eq $null){
+if($Local_v -lt $Available_v -or $Local_v -eq $null -and $ignore -eq $false){
     # do a nice pop up interaction
     $a = new-object -comobject wscript.shell
     $q1 = $a.popup("Download version $Available_v of Powershell-Core now?",0,"New version available!",4)
