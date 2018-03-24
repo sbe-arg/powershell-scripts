@@ -18,10 +18,10 @@ $Available_v = $Response.tag_name -replace "v","" # tag from github
 if($Available_v.split(".").count -gt "5"){
     Write-Warning "New available version of Git SCM $Available_v but does not match X.X.X.windows.X so might not be stable."
 }
-else{
-    $Available_v_split = $Available_v.split(".windows")
-    $Available_v = $Available_v_split[0]
-}
+
+$Available_v_split = $Available_v.split(".windows")
+$Available_v = $Available_v_split[0]
+
 if($Local_v -lt $Available_v -or $Local_v -eq $null){
     # do a nice pop up interaction
     $a = new-object -comobject wscript.shell
