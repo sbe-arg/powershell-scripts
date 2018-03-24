@@ -19,20 +19,19 @@ if($Available_v.split(".").count -gt "5"){
     Write-Warning "New available version of Git SCM $Available_v but does not match X.X.X.windows.X so might not be stable."
 }
 
-$Available_v_split = $Available_v.split(".windows")
-$Available_v = $Available_v_split[0]
+$Available_v_split = $Available_v -replace ".windows.*",""
 
-if($Local_v -lt $Available_v -or $Local_v -eq $null){
+if($Local_v -lt $Available_v_split -or $Local_v -eq $null){
     # do a nice pop up interaction
     $a = new-object -comobject wscript.shell
-    $q1 = $a.popup("Download version $Available_v of Git SCM now?",0,"New version available!",4)
+    $q1 = $a.popup("Download version $Available_v_split of Git SCM now?",0,"New version available!",4)
     If ($q1 -eq 6) {
-        $q2 = $a.popup("Start download...",0,"Git SCM version $Available_v",4)
+        $q2 = $a.popup("Start download...",0,"Git SCM version $Available_v_split",4)
         If ($q2 -eq 6){
             # --- Download the file to the current location
             $OutputPath = "$((Get-Location).Path)\$($Asset.name)"
             Invoke-RestMethod -Method Get -Uri $AssetUrl -OutFile $OutputPath
-            $q3 = $a.popup("Open container folder? $((Get-Location).Path)",0,"Git SCM version $Available_v",4)
+            $q3 = $a.popup("Open container folder? $((Get-Location).Path)",0,"Git SCM version $Available_v_split",4)
             If ($q3 -eq 6){
                 ii .
             }
@@ -49,6 +48,6 @@ if($Local_v -lt $Available_v -or $Local_v -eq $null){
     #5 Show Retry and Cancel buttons.
 }
 else{
-    Write-Host "You are running the latest version of Git SCM ($Available_v)." -ForegroundColor Yellow
-    [Environment]::SetEnvironmentVariable("git_scm_version", $Available_v, "User")
+    Write-Host "You are running the latest version of Git SCM ($Available_v_split)." -ForegroundColor Yellow
+    [Environment]::SetEnvironmentVariable("git_scm_version", $Available_v_split, "User")
 }
