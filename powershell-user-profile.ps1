@@ -79,6 +79,8 @@ iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Upd
 .\Update-Notifier-Atom
 iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-GitHub.ps1 -UseBasicParsing -OutFile .\Update-Notifier-GitHub.ps1
 .\Update-Notifier-GitHub
+iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Git-SCM.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Git-SCM.ps1
+.\Update-Notifier-Git-SCM
 
 # session aliases that I don't want permanent
 Set-Alias -Name pwsh -Value "C:\Program Files\PowerShell\$env:powershell_netcore_version\pwsh.exe"
