@@ -1,13 +1,13 @@
 ﻿Set-Location $env:userprofile\Downloads\
 
-$Check_lv = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object {$_.DisplayName -like "Atom"}
+$Check_lv = Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object {$_.DisplayName -eq "Atom"}
 $Local_v = $Check_lv.DisplayVersion
 
 # set SSL/TLS cert type
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # --- Set the uri for the latest release
-$URI = "https://github.com/atom/atom/releases/latest"
+$URI = "https://api.github.com/repos/atom/atom/releases/latest"
 
 # --- Query the API to get the url of the zip
 $Response = Invoke-RestMethod -Method Get -Uri $URI
@@ -19,9 +19,9 @@ if($Available_v.split(".").count -gt "3"){
     Write-Warning "Version number on $($Response.assets_url) does not match X.X.X"
     break
 }
-$Available_v_match = $Available_v # + ".0" # match what is installed on windows
+$Available_v_match = $Available_v # match what is installed on windows
 
-if($Local_v -lt $Available_v -or $Local_v -eq "$null"){
+if($Local_v -lt $Available_v -or $Local_v -eq $null){
     # do a nice pop up interaction
     $a = new-object -comobject wscript.shell
     $q1 = $a.popup("Download version $Available_v of Atom.io now?",0,"New version available!",4)
