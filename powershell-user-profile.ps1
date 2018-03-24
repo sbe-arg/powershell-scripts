@@ -10,8 +10,6 @@ $git = Import-Module posh-git -PassThru | select Name,Version
 if($git -eq $null){PowerShellGet\Install-Module posh-git -Scope CurrentUser ; Import-Module posh-git -PassThru | select Name,Version}
 Write-Host "Importing module $($git.Name) $($git.Version)..." -ForegroundColor Yellow
 
-
-
 # do a nice pop up interaction
 $a = new-object -comobject wscript.shell
 $q1 = $a.popup("Don't forget to use Powershell-Core, 'pwsh'.",0,"Reminder!",0)
@@ -26,9 +24,13 @@ $q1 = $a.popup("Don't forget to use Powershell-Core, 'pwsh'.",0,"Reminder!",0)
 #5 Show Retry and Cancel buttons.
 
 cd $env:userprofile\Downloads\
-iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Powershell-Core-Update-Notifier.ps1 -UseBasicParsing -OutFile .\Powershell-Core-Update-Notifier.ps1
-.\Powershell-Core-Update-Notifier
+# do some checks
+iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Powershell-Core.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Powershell-Core.ps1
+.\Update-Notifier-Powershell-Core
+iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Atom.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Atom.ps1
+.\Update-Notifier-Atom
 
+# session aliases that I don't want permanent
 Set-Alias -Name pwsh -Value "C:\Program Files\PowerShell\$env:powershell_netcore_version\pwsh.exe"
 
 $location = Set-Location -Path C:\Dev -PassThru
