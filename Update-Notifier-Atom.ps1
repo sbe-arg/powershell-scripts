@@ -19,6 +19,7 @@ if($Available_v.split(".").count -gt "3"){
     Write-Warning "New available version of Atom $Available_v but does not match X.X.X so might not be stable."
 }
 elseif($Local_v -lt $Available_v -or $Local_v -eq $null){
+  Write-Warning "New available version of Atom $Available_v"
     # do a nice pop up interaction
     $a = new-object -comobject wscript.shell
     $q1 = $a.popup("Download version $Available_v of Atom.io now?",0,"New version available!",4)
