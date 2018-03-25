@@ -67,13 +67,13 @@ $PowerShellGet_modules = @(
   "AWSPowershell"
 )
 foreach($module in $PowerShellGet_modules){
-  Write-Host "Importing module $module..." -ForegroundColor Yellow
+  Write-Host "Importing module $module" -ForegroundColor Yellow
   try{
-    Import-Module $module -PassThru -ErrorAction Stop | select Name,Version
+    Import-Module $module -ErrorAction Stop
   }
   catch{
     PowerShellGet\Install-Module $module -Scope CurrentUser
-    Import-Module $module -PassThru | select Name,Version
+    Import-Module $module
   }
 }
 # this ones are my forks
@@ -82,20 +82,22 @@ foreach($module in $PowerShellGet_modules){
   "Posh-AwsEasy" = "https://github.com/sbe-arg/Posh-AwsEasy/archive/master.zip"
 }
 foreach($module in $PsGet_modules.keys){
-  Write-Host "Importing module $module..." -ForegroundColor Yellow
+  Write-Host "Importing module $module" -ForegroundColor Yellow
   try{
-    Import-Module $module -PassThru -ErrorAction Stop | select Name,Version
+    Import-Module $module -ErrorAction Stop
   }
   catch{
     try{
       psget\Install-Module -ModuleUrl ($PsGet_modules.Values | where {$_ -match $module}) -Update
-      Import-Module $module -PassThru | select Name,Version
+      Import-Module $module
     }
     catch{
       (new-object Net.WebClient).DownloadString("https://raw.githubusercontent.com/psget/psget/master/GetPsGet.ps1") | iex
     }
   }
 }
+
+Get-Module | select Name,Version
 
 # reminder
 Write-Host "Don't forget to use Powershell-Core, 'pwsh'..."
