@@ -24,7 +24,7 @@ if($Available_v.split(".").count -gt "3"){
 elseif($Local_v -lt $Available_v -or $Local_v -eq $null){
     # do a nice pop up interaction
     $a = new-object -comobject wscript.shell
-    $q1 = $a.popup("Download version $Available_v of Powershell-Core now?",0,"New version available!",4)
+    $q1 = $a.popup("Download version $Available_v of Powershell-Core now?",0,"Version available!",4)
     If ($q1 -eq 6) {
         $q2 = $a.popup("Start download...",0,"Powershell-Core version $Available_v",4)
         If ($q2 -eq 6){
@@ -50,3 +50,5 @@ elseif($Local_v -lt $Available_v -or $Local_v -eq $null){
 else{
     Write-Host "You have the latest version." -ForegroundColor Green
 }
+
+Write-Host ""
