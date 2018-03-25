@@ -19,7 +19,7 @@ if($Local_v -ne $Null){
   Write-Host "You are running the version $Local_v of Git SCM." -ForegroundColor Yellow
 }
 if($Available_v.split(".").count -gt "5"){
-    Write-Warning "New available version of Git SCM $Available_v but does not match X.X.X.windows.X so might not be stable."
+    Write-Host "New available version of Git SCM $Available_v but does not match X.X.X.windows.X so might not be stable." -ForegroundColor Magenta -NoNewline
 }
 
 $Available_v_split = $Available_v -replace ".windows.*",""
@@ -51,5 +51,5 @@ if($Local_v -lt $Available_v_split -or $Local_v -eq $null){
     #5 Show Retry and Cancel buttons.
 }
 else{
-    Write-Host "You are running the latest version of Git SCM." -ForegroundColor Green
+    Write-Host "You have the latest version." -ForegroundColor Green
 }
