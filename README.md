@@ -1,2 +1,2 @@
 # powershell-scripts
-Some usefull scripts
+Some scripts.

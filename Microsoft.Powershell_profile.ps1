@@ -56,14 +56,46 @@ $host.ui.RawUI.windowsize.width = 170
 $host.ui.RawUI.windowsize.height = 50
 Set-ConsoleOpacity -Opacity 95
 
-# import must have module
-$git = Import-Module posh-git -PassThru | select Name,Version
-if($git -eq $null){PowerShellGet\Install-Module posh-git -Scope CurrentUser ; Import-Module posh-git -PassThru | select Name,Version}
-Write-Host "Importing module $($git.Name) $($git.Version)..." -ForegroundColor Yellow
-
 # do a nice pop up interaction as powershell is running, you will be surpriced how many times powershell runs without your knowledge
 $a = new-object -comobject wscript.shell
 $q1 = $a.popup("Console started.",0,"Powershell.",0)
+
+# import must have modules
+$PowerShellGet_modules = @(
+  "Posh-Git",
+  "CloudRemoting",
+  "AWSPowershell"
+)
+foreach($module in $PowerShellGet_modules){
+  Write-Host "Importing module $module..." -ForegroundColor Yellow
+  try{
+    Import-Module $module -PassThru -ErrorAction Stop | select Name,Version
+  }
+  catch{
+    PowerShellGet\Install-Module $module -Scope CurrentUser
+    Import-Module $module -PassThru | select Name,Version
+  }
+}
+# this ones are my forks
+[hashtable]$PsGet_modules = @{
+  "Posh-Santiago" = "https://github.com/sbe-arg/Posh-Santiago/archive/master.zip"
+  "Posh-AwsEasy" = "https://github.com/sbe-arg/Posh-AwsEasy/archive/master.zip"
+}
+foreach($module in $PsGet_modules.keys){
+  Write-Host "Importing module $module..." -ForegroundColor Yellow
+  try{
+    Import-Module $module -PassThru -ErrorAction Stop | select Name,Version
+  }
+  catch{
+    try{
+      psget\Install-Module -ModuleUrl ($PsGet_modules.Values | where {$_ -match $module}) -Update
+      Import-Module $module -PassThru | select Name,Version
+    }
+    catch{
+      (new-object Net.WebClient).DownloadString("https://raw.githubusercontent.com/psget/psget/master/GetPsGet.ps1") | iex
+    }
+  }
+}
 
 # reminder
 Write-Host "Don't forget to use Powershell-Core, 'pwsh'..."
