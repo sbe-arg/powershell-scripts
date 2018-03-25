@@ -108,12 +108,13 @@ if((Test-Connection 8.8.8.8 -Quiet -Count 1) -eq $True){
   # do some checks
   iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Powershell-Core.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Powershell-Core.ps1
   .\Update-Notifier-Powershell-Core
-  iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Atom.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Atom.ps1
-  .\Update-Notifier-Atom
-  iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-GitHub.ps1 -UseBasicParsing -OutFile .\Update-Notifier-GitHub.ps1
-  .\Update-Notifier-GitHub
   iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Git-SCM.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Git-SCM.ps1
   .\Update-Notifier-Git-SCM
+  iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Atom.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Atom.ps1
+  .\Update-Notifier-Atom
+  # this one is different
+  iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-GitHub.ps1 -UseBasicParsing -OutFile .\Update-Notifier-GitHub.ps1
+  .\Update-Notifier-GitHub
 }
 else{
   Write-Warning "No internet connection?... can't ping 8.8.8.8"
