@@ -16,10 +16,10 @@ $AssetUrl = $Asset.browser_download_url
 
 $Available_v = $Response.tag_name -replace "v","" # tag from github
 if($Local_v -ne $Null){
-  Write-Host "You are running the version $Local_v of Powershell-Core." -ForegroundColor Yellow -NoNewline
+  Write-Host "Found version $Local_v of Powershell-Core. " -ForegroundColor Yellow -NoNewline
 }
 if($Available_v.split(".").count -gt "3"){
-    Write-Host "New available version of Powershell-Core $Available_v but does not match X.X.X so might not be stable." -ForegroundColor Magenta -NoNewline
+    Write-Host "New version available ($Available_v) but might not be stable. " -ForegroundColor Magenta -NoNewline
 }
 elseif($Local_v -lt $Available_v -or $Local_v -eq $null){
     # do a nice pop up interaction

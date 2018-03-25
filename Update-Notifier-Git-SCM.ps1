@@ -16,10 +16,10 @@ $AssetUrl = $Asset.browser_download_url
 
 $Available_v = $Response.tag_name -replace "v","" # tag from github
 if($Local_v -ne $Null){
-  Write-Host "You are running the version $Local_v of Git SCM." -ForegroundColor Yellow
+  Write-Host "Found version $Local_v of Git SCM. " -ForegroundColor Yellow
 }
 if($Available_v.split(".").count -gt "5"){
-    Write-Host "New available version of Git SCM $Available_v but does not match X.X.X.windows.X so might not be stable." -ForegroundColor Magenta -NoNewline
+    Write-Host "New version available ($Available_v) but might not be stable. " -ForegroundColor Magenta -NoNewline
 }
 
 $Available_v_split = $Available_v -replace ".windows.*",""
