@@ -8,7 +8,7 @@ if($Local_v -eq $null){
   Write-Host "Can't find GitHub Desktop on system. https://desktop.github.com/" -ForegroundColor Yellow
 }
 else{
-    Write-Host "You are running the version $Local_v of GitHub Desktop." -ForegroundColor Yellow
+  Write-Host "You are running the version $Local_v of GitHub Desktop." -ForegroundColor Yellow
 }
 
 # desktop (deprecated version)
