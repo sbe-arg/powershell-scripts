@@ -120,9 +120,10 @@ else{
 }
 
 # ps.net?
-if((test-path "C:\Program Files\PowerShell\$env:powershell_netcore_version\pwsh.exe") -eq $True){
+$pwsh = Get-ChildItem "C:\Program Files\PowerShell\" -Recurse | where {$_.FullName -match "pwsh.exe"}
+if($pwsh -ne $Null){
   # session aliases that I don't want permanent
-  Set-Alias -Name pwsh -Value "C:\Program Files\PowerShell\$env:powershell_netcore_version\pwsh.exe"
+  Set-Alias -Name pwsh -Value $pwsh.FullName
 }
 
 # set location to your safe place

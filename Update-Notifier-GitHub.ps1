@@ -9,7 +9,6 @@ if($Local_v -eq $null){
 }
 else{
     Write-Host "You are running version of GitHub Desktop ($Local_v)." -ForegroundColor Yellow
-    [Environment]::SetEnvironmentVariable("git_desktop_version", $Local_v, "User")
 }
 
 # desktop (deprecated version)

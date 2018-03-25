@@ -49,5 +49,4 @@ if($Local_v -lt $Available_v_split -or $Local_v -eq $null){
 }
 else{
     Write-Host "You are running the latest version of Git SCM ($Available_v_split)." -ForegroundColor Yellow
-    [Environment]::SetEnvironmentVariable("git_scm_version", $Available_v_split, "User")
 }

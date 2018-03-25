@@ -46,5 +46,4 @@ elseif($Local_v -lt $Available_v -or $Local_v -eq $null){
 }
 else{
     Write-Host "You are running the latest version of Powershell-Core ($Available_v)." -ForegroundColor Yellow
-    [Environment]::SetEnvironmentVariable("powershell_netcore_version", $Available_v, "User")
 }

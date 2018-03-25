@@ -46,5 +46,4 @@ elseif($Local_v -lt $Available_v -or $Local_v -eq $null){
 }
 else{
     Write-Host "You are running the latest version of Atom.io ($Available_v)." -ForegroundColor Yellow
-    [Environment]::SetEnvironmentVariable("atom_io_version", $Available_v, "User")
 }
