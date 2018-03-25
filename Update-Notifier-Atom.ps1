@@ -15,20 +15,23 @@ $Asset = $Response.Assets | Where-Object {$_.Name -eq "AtomSetup-x64.exe"}
 $AssetUrl = $Asset.browser_download_url
 
 $Available_v = $Response.tag_name -replace "v","" # tag from github
+if($Local_v -ne $Null){
+  Write-Host "You are running the version $Local_v of Atom." -ForegroundColor Yellow
+}
 if($Available_v.split(".").count -gt "3"){
     Write-Warning "New available version of Atom $Available_v but does not match X.X.X so might not be stable."
 }
 elseif($Local_v -lt $Available_v -or $Local_v -eq $null){
     # do a nice pop up interaction
     $a = new-object -comobject wscript.shell
-    $q1 = $a.popup("Download version $Available_v of Atom.io now?",0,"New version available!",4)
+    $q1 = $a.popup("Download version $Available_v of Atom now?",0,"New version available!",4)
     If ($q1 -eq 6) {
-        $q2 = $a.popup("Start download...",0,"Atom.io version $Available_v",4)
+        $q2 = $a.popup("Start download...",0,"Atom version $Available_v",4)
         If ($q2 -eq 6){
             # --- Download the file to the current location
             $OutputPath = "$((Get-Location).Path)\$($Asset.name)"
             Invoke-RestMethod -Method Get -Uri $AssetUrl -OutFile $OutputPath
-            $q3 = $a.popup("Open container folder? $((Get-Location).Path)",0,"Atom.io version $Available_v",4)
+            $q3 = $a.popup("Open container folder? $((Get-Location).Path)",0,"Atom version $Available_v",4)
             If ($q3 -eq 6){
                 ii .
             }
@@ -45,5 +48,5 @@ elseif($Local_v -lt $Available_v -or $Local_v -eq $null){
     #5 Show Retry and Cancel buttons.
 }
 else{
-    Write-Host "You are running the latest version of Atom.io ($Available_v)." -ForegroundColor Yellow
+    Write-Host "You are running the latest version of Atom." -ForegroundColor Green
 }
