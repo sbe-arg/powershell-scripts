@@ -1,9 +1,11 @@
 # set SSL/TLS
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
+# check console rights
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $adminstatus = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
+# handy function to change console opacity
 function Set-ConsoleOpacity
 {
     param(
@@ -48,42 +50,47 @@ function Set-ConsoleOpacity
     [void]$Win32Type::SetLayeredWindowAttributes($WindowHandle,0,$OpacityValue,$LwaAlpha)
 }
 
+# set some console ui values
 $host.ui.RawUI.WindowTitle = "Powershell - StartTime: $(Get-Date -Format h:mm:sss) - AdminMode: $adminstatus - Version: $($PSVersionTable.PSVersion)"
 $host.ui.RawUI.windowsize.width = 170
 $host.ui.RawUI.windowsize.height = 50
-
 Set-ConsoleOpacity -Opacity 95
 
+# import must have module
 $git = Import-Module posh-git -PassThru | select Name,Version
 if($git -eq $null){PowerShellGet\Install-Module posh-git -Scope CurrentUser ; Import-Module posh-git -PassThru | select Name,Version}
 Write-Host "Importing module $($git.Name) $($git.Version)..." -ForegroundColor Yellow
 
-# do a nice pop up interaction
+# do a nice pop up interaction as powershell is running, you will be surpriced how many times powershell runs without your knowledge
 $a = new-object -comobject wscript.shell
-$q1 = $a.popup("Don't forget to use Powershell-Core, 'pwsh'.",0,"Reminder!",0)
+$q1 = $a.popup("Console started.",0,"Powershell.",0)
 
-#Button Types
-#Value Description
-#0 Show OK button.
-#1 Show OK and Cancel buttons.
-#2 Show Abort, Retry, and Ignore buttons.
-#3 Show Yes, No, and Cancel buttons.
-#4 Show Yes and No buttons.
-#5 Show Retry and Cancel buttons.
+# reminder
+Write-Host "Don't forget to use Powershell-Core, 'pwsh'..."
 
-cd $env:userprofile\Downloads\
-# do some checks
-iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Powershell-Core.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Powershell-Core.ps1
-.\Update-Notifier-Powershell-Core
-iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Atom.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Atom.ps1
-.\Update-Notifier-Atom
-iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-GitHub.ps1 -UseBasicParsing -OutFile .\Update-Notifier-GitHub.ps1
-.\Update-Notifier-GitHub
-iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Git-SCM.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Git-SCM.ps1
-.\Update-Notifier-Git-SCM
+# inet works?
+if((Test-Connection 8.8.8.8 -Quiet -Count 1) -eq $True){
+  cd $env:userprofile\Downloads\
+  # do some checks
+  iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Powershell-Core.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Powershell-Core.ps1
+  .\Update-Notifier-Powershell-Core
+  iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Atom.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Atom.ps1
+  .\Update-Notifier-Atom
+  iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-GitHub.ps1 -UseBasicParsing -OutFile .\Update-Notifier-GitHub.ps1
+  .\Update-Notifier-GitHub
+  iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Git-SCM.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Git-SCM.ps1
+  .\Update-Notifier-Git-SCM
+}
+else{
+  Write-Warning "No internet connection?... can't ping 8.8.8.8"
+}
 
-# session aliases that I don't want permanent
-Set-Alias -Name pwsh -Value "C:\Program Files\PowerShell\$env:powershell_netcore_version\pwsh.exe"
+# ps.net?
+if((test-path "C:\Program Files\PowerShell\$env:powershell_netcore_version\pwsh.exe") -eq $True){
+  # session aliases that I don't want permanent
+  Set-Alias -Name pwsh -Value "C:\Program Files\PowerShell\$env:powershell_netcore_version\pwsh.exe"
+}
 
+# set location to your safe place
 $location = Set-Location -Path C:\Dev -PassThru
 Write-Host "Setting console location to $($location.Path)..." -ForegroundColor Yellow
