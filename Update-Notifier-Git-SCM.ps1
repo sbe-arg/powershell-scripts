@@ -14,7 +14,7 @@ $Response = Invoke-RestMethod -Method Get -Uri $URI
 $Asset = $Response.Assets | Where-Object {$_.Name -like "*-64-bit.exe"}
 $AssetUrl = $Asset.browser_download_url
 
-$Available_v = $Response.tag_name -replace "v","" # tag from github
+$Available_v = $Response.tag_name -replace "^v","" # tag from github
 if($Local_v -ne $Null){
   Write-Host "Found version $Local_v of Git SCM. " -ForegroundColor Yellow
 }
