@@ -64,7 +64,9 @@ $q1 = $a.popup("Console started.",0,"Powershell.",0)
 $PowerShellGet_modules = @(
   "Posh-Git",
   "CloudRemoting",
-  "AWSPowershell"
+  "AWSPowershell",
+  "PSScriptAnalyzer",
+  "Pester"
 )
 foreach($module in $PowerShellGet_modules){
   Write-Host "Importing module $module" -ForegroundColor Yellow
