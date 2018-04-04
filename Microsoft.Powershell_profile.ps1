@@ -65,8 +65,8 @@ $PowerShellGet_modules = @(
   "Posh-Git",
   "CloudRemoting",
   "AWSPowershell",
-  "PSScriptAnalyzer",
-  "Pester"
+  "Posh-AwsEasy",
+  "Posh-Santiago"
 )
 foreach($module in $PowerShellGet_modules){
   Write-Host "Importing module $module" -ForegroundColor Yellow
@@ -80,8 +80,7 @@ foreach($module in $PowerShellGet_modules){
 }
 # this ones are my forks
 [hashtable]$PsGet_modules = @{
-  "Posh-Santiago" = "https://github.com/sbe-arg/Posh-Santiago/archive/master.zip"
-  "Posh-AwsEasy" = "https://github.com/sbe-arg/Posh-AwsEasy/archive/master.zip"
+  
 }
 foreach($module in $PsGet_modules.keys){
   Write-Host "Importing module $module" -ForegroundColor Yellow
