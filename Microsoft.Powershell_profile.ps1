@@ -6,8 +6,7 @@ $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Pri
 $adminstatus = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 # handy function to change console opacity
-function Set-ConsoleOpacity
-{
+function Set-ConsoleOpacity{
     param(
         [ValidateRange(10,100)]
         [int]$Opacity
@@ -20,10 +19,8 @@ function Set-ConsoleOpacity
         $Win32Type = Add-Type -MemberDefinition @'
             [DllImport("user32.dll")]
             public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
             [DllImport("user32.dll")]
             public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
             [DllImport("user32.dll")]
             public static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 '@ -Name WindowLayer -Namespace Win32 -PassThru
@@ -45,7 +42,6 @@ function Set-ConsoleOpacity
         # If Window isn't already marked "Layered", make it so
         [void]$Win32Type::SetWindowLong($WindowHandle,$GwlExStyle,$Win32Type::GetWindowLong($WindowHandle,$GwlExStyle) -bxor $WsExLayered)
     }
-
     # Set transparency
     [void]$Win32Type::SetLayeredWindowAttributes($WindowHandle,0,$OpacityValue,$LwaAlpha)
 }
@@ -60,7 +56,11 @@ Set-ConsoleOpacity -Opacity 95
 $a = new-object -comobject wscript.shell
 $q1 = $a.popup("Console started.",0,"Powershell.",0)
 
-# import must have modules
+$psgallery = Get-PSRepository -Name PSGallery
+if($psgallery.InstallationPolicy -ne 'Trusted'){Write-Warning "PSGallery: Untrusted!. 'Set-PSRepository -Name PSGallery -InstallationPolicy Trusted'"}
+else{Write-Output "PSGallery: Trusted!."}
+
+# import PSGallery modules
 $PowerShellGet_modules = @(
   "Posh-Git",
   "CloudRemoting",
@@ -78,7 +78,8 @@ foreach($module in $PowerShellGet_modules){
     Import-Module $module
   }
 }
-# this ones are my forks
+
+# import PsGet based modules
 [hashtable]$PsGet_modules = @{
   
 }
@@ -104,7 +105,7 @@ Get-Module | select Name,Version
 Write-Host "Don't forget to use Powershell-Core, 'pwsh'..."
 
 # inet works?
-if((Test-Connection 8.8.8.8 -Quiet -Count 1) -eq $True){
+if((Test-Connection 1.1.1.1 -Quiet -Count 1) -eq $True){
   cd $env:userprofile\Downloads\
   # do some checks
   iwr -Uri https://raw.githubusercontent.com/sbe-arg/powershell-scripts/master/Update-Notifier-Powershell-Core.ps1 -UseBasicParsing -OutFile .\Update-Notifier-Powershell-Core.ps1
@@ -118,7 +119,7 @@ if((Test-Connection 8.8.8.8 -Quiet -Count 1) -eq $True){
   .\Update-Notifier-GitHub
 }
 else{
-  Write-Warning "No internet connection?... can't ping 8.8.8.8"
+  Write-Warning "No internet connection?... can't ping 1.1.1.1"
 }
 
 # ps.net?
