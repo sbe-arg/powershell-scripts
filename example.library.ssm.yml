@@ -1,0 +1,13 @@
+schemaVersion: '2.2'
+description: SSM PowerShellScript
+parameters: {}
+mainSteps:
+- action: aws:runPowerShellScript
+  name: runPowerShellScript
+  inputs:
+    runCommand:
+    # write/paste script your content here:
+    - hostname
+    - "hello world"
+    - $services = get-service
+    - $services | where {$_.name -like "W32Time"}
